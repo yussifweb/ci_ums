@@ -38,6 +38,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <div class="row">
             <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="sidebar-sticky pt-3">
+
+                    <img class="img-fluid shadows" src="<?php echo base_url('assets/images/user.png'); ?>" alt="User">
+
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" href="<?php echo site_url(); ?>guest">
