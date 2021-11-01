@@ -38,8 +38,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <div class="row">
             <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="sidebar-sticky pt-3">
-
-                    <img class="img-fluid shadows" src="<?php echo base_url('assets/images/user.png'); ?>" alt="User">
+                    <div class="m-auto">
+                        <?php
+                            $img = base_url('assets/images/user.png');
+                            if (isset($profile->person_info->photo) && !empty($profile->person_info->photo)) {
+                                if (file_exists('./uploads/' . $profile->person_info->photo)) {
+                                    $img = base_url('uploads/' . $profile->person_info->photo);
+                                }
+                            }
+                        ?>
+                        <img class="img-fluid img-round" src="<?php echo $img; ?>" alt="User">
+                        <p class="text-center"><a href="<?php echo site_url(); ?>guest/edit_profile_pic"><span data-feather="pencil"></span>Edit</a></p>
+                    </div>
 
                     <ul class="nav flex-column">
                         <li class="nav-item">

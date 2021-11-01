@@ -217,4 +217,48 @@ public function get_skill_info($id)
     }
 
 
+    public function update_profile_pic($file_name)
+    {
+        $user_id = (int) $this->input->post('user_id');
+
+        $this->del_prev_pic($user_id);
+        $data = array(
+            'user_id' => $user_id,
+            'photo' => $file_name
+        );
+
+        if ($this->if_exist_person_info($user_id)) {
+            $this->db->where('user_id', $user_id);
+            $response = $this->db->update('person_info', $data);
+
+            if ($response) {
+                return $user_id;
+            } else {
+                return FALSE;
+            }
+        } else {
+            $response = $this->db->insert('person_info', $data);
+
+            if ($response) {
+                return $this->db->insert_id();
+            } else {
+                return FALSE;
+            }
+        }
+    }
+
+
+    public function del_prev_pic($user_id){
+        $data = $this->get_person_info($user_id);
+
+        if (isset($data->photo) && !empty($data->photo)) {
+            $file_name = './uploads/' . $data->photo;
+            if (file_exists($file_name)) {
+                return unlink($file_name);
+            }
+        }
+        return TRUE;
+    }
+
+
 }

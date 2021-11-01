@@ -143,4 +143,45 @@ class Guest extends CI_Controller
     }
 
 
+    public function edit_profile_pic(){
+        $data['title'] = 'Edit Profile Picture';
+        $this->submit_profile_pic();
+
+        $this->load->model('user_model');
+        $id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($id);
+
+        $this->load->view('guest/header', $data);
+        $this->load->view('guest/edit_profile_pic');
+        $this->load->view('guest/footer');
+    }
+
+    public function submit_profile_pic(){
+        if ($this->input->post('submit')) {
+        $config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'jpg|png';
+        // $config['max_size']             = 1000;
+        // $config['max_width']            = 1024;
+        // $config['max_height']           = 768;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('pic')) {
+            $this->session->set_flashdata('error', $this->upload->display_errors());                
+        } else {
+            $file_name = $this->upload->data('file_name');
+            $this->load->model('user_model');
+            $response = $this->user_model->update_profile_pic($file_name);
+
+            if ($response) {
+                $this->session->set_flashdata('success', 'Profile Picture Updated Successfully.');
+            } else {
+                $this->session->set_flashdata('error', 'The operation was not successful.');
+            }
+        }
+        redirect('guest/edit_profile_pic');
+      }
+    }
+
+
 }
