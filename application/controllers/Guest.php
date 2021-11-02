@@ -17,10 +17,14 @@ class Guest extends CI_Controller
         }else {
             redirect('/');
         }
+
+        $this->load->model('user_model');
+        $id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($id);
     }
 
-    public function index()
-    {
+    public function index(){
+        // $this->person_info();
         $data['title'] = 'Dashboard';
 
         $this->load->model('user_model');

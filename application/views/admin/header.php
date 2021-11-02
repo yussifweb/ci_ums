@@ -12,7 +12,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta name="description" content="">
     <meta name="theme-color" content="#563d7c">
 
-    <title><?php echo $profile->fname; ?> - Profile Management System</title>
+    <title>Admin - Profile Management System</title>
 
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>">
 
@@ -53,11 +53,60 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list">
+                                <span data-feather="file"></span>
+                                All Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list">
+                                <span data-feather="file"></span>
+                                Active Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list_deactivated">
+                                <span data-feather="file"></span>
+                                Inactive Users
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url(); ?>admin/add_user">
+                                <span data-feather="file"></span>
+                                Add User
+                            </a>
+                        </li>
+
+                        <hr class="mx-1" />
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url(); ?>admin/guests_list">
+                                <span data-feather="file"></span>
+                                All Guests
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url(); ?>admin/guests_list">
+                                <span data-feather="file"></span>
+                                Active Guests
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url(); ?>admin/guests_list_deactivated">
+                                <span data-feather="file"></span>
+                                Inactive Guests
+                            </a>
+                        </li>
+
+                        <!-- <li class="nav-item">
                             <a class="nav-link active" href="<?php echo site_url(); ?>guest">
                                 <span data-feather="home"></span>
                                 Dashboard <span class="sr-only">(current)</span>
                             </a>
-                        </li>
+                        </li> -->
+                        <hr class="mx-3" />
+
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo site_url(); ?>guest/person_info">
                                 <span data-feather="file"></span>
