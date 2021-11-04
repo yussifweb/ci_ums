@@ -40,8 +40,7 @@ class Admin extends CI_Controller
         $data['title'] = 'All Users';
 
         $this->load->model('user_model');
-        $id = $_SESSION['user_id'];
-        $data['profile'] = $this->user_model->get_profile_info($id);
+        $data['users'] = $this->user_model->get_active_users();
 
         // var_dump($data);
         // dd($data);
@@ -54,9 +53,9 @@ class Admin extends CI_Controller
     public function users_list_deactivated(){
         $data['title'] = 'All Inactive Users';
 
-        $this->load->model('user_model');
-        $id = $_SESSION['user_id'];
-        $data['profile'] = $this->user_model->get_profile_info($id);
+        // $this->load->model('user_model');
+        // $id = $_SESSION['user_id'];
+        // $data['profile'] = $this->user_model->get_profile_info($id);
 
         // var_dump($data);
         // dd($data);
@@ -69,9 +68,9 @@ class Admin extends CI_Controller
     public function guests_list(){
         $data['title'] = 'All Guests';
 
-        $this->load->model('user_model');
-        $id = $_SESSION['user_id'];
-        $data['profile'] = $this->user_model->get_profile_info($id);
+        // $this->load->model('user_model');
+        // $id = $_SESSION['user_id'];
+        // $data['profile'] = $this->user_model->get_profile_info($id);
 
         // var_dump($data);
         // dd($data);
@@ -85,9 +84,9 @@ class Admin extends CI_Controller
     public function guests_list_deactivated(){
         $data['title'] = 'All Inactive Guests';
 
-        $this->load->model('user_model');
-        $id = $_SESSION['user_id'];
-        $data['profile'] = $this->user_model->get_profile_info($id);
+        // $this->load->model('user_model');
+        // $id = $_SESSION['user_id'];
+        // $data['profile'] = $this->user_model->get_profile_info($id);
 
         // var_dump($data);
         // dd($data);
@@ -100,9 +99,11 @@ class Admin extends CI_Controller
     public function add_user(){
         $data['title'] = 'Add New User';
 
-        $this->load->model('user_model');
-        $id = $_SESSION['user_id'];
-        $data['profile'] = $this->user_model->get_profile_info($id);
+        $this->submit_user();
+
+        // $this->load->model('user_model');
+        // $id = $_SESSION['user_id'];
+        // $data['profile'] = $this->user_model->get_profile_info($id);
 
         // var_dump($data);
         // dd($data);
@@ -110,6 +111,67 @@ class Admin extends CI_Controller
         $this->load->view('admin/header', $data);
         $this->load->view('admin/add_user');
         $this->load->view('admin/footer');
+    }
+
+    public function submit_user()
+    {
+        if ($this->input->post('submit')) {
+            $this->form_validation->set_rules('fname', 'First Name', 'trim|required');
+            $this->form_validation->set_rules('lname', 'Last Name', 'trim|required');
+            $this->form_validation->set_rules('username', 'Username', 'trim|required');
+            $this->form_validation->set_rules('role', 'Role', 'trim|required');
+            $this->form_validation->set_rules('password', 'Password', 'trim|required');
+            $this->form_validation->set_rules('password2', 'Confirm Password', 'trim|required|matches[password]');
+
+            if ($this->form_validation->run() != FALSE) {
+                $this->load->model('user_model');
+                $response = $this->user_model->register_user();
+
+                if ($response) {
+                    $this->session->set_flashdata('success', 'Account info submission successful.');
+                } else {
+                    $this->session->set_flashdata('error', 'The operation was not successful.');
+                }
+
+                redirect('admin/add_user');
+            }
+        }
+    }
+
+    public function edit_user($id){
+
+        $this->update_user_info();
+        
+        $data['title'] = 'Edit User Information';
+
+        $this->load->model('user_model');
+        $data['user'] = $this->user_model->get_user_info($id);
+
+        $this->load->view('admin/header', $data);
+        $this->load->view('admin/edit_user');
+        $this->load->view('admin/footer');
+    }
+
+    public function update_user_info(){
+        if ($this->input->post('update')) {
+            $this->form_validation->set_rules('fname', 'First Name', 'trim|required');
+            $this->form_validation->set_rules('lname', 'Last Name', 'trim|required');
+            $this->form_validation->set_rules('username', 'Username', 'trim|required');
+            $this->form_validation->set_rules('role', 'Role', 'trim|required');
+
+            if ($this->form_validation->run() != FALSE) {
+                $this->load->model('user_model');
+                $response = $this->user_model->update_user();
+
+                if ($response) {
+                    $this->session->set_flashdata('success', 'User info update successful.');
+                } else {
+                    $this->session->set_flashdata('error', 'The update was not successful.');
+                }
+
+                redirect('admin/users_list');
+            }
+        }
     }
 
     

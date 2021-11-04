@@ -261,4 +261,93 @@ public function get_skill_info($id)
     }
 
 
+    // ADMIN ADD USER
+
+    public function register_user()
+    {
+        $fname = (string) $this->input->post('fname');
+        $mname = (string) $this->input->post('mname');
+        $lname = (string) $this->input->post('lname');
+        $xname = (string) $this->input->post('xname');
+        $username = (string) $this->input->post('username');
+        $password = (string) $this->input->post('password');
+        $password = md5($password);
+        $role = (string) $this->input->post('role');
+
+        $data = array(
+            'fname' => $fname,
+            'mname' => $mname,
+            'lname' => $lname,
+            'xname' => $xname,
+            'username' => $username,
+            'password' => $password,
+            'role' => $role
+        );
+
+        $response = $this->db->insert('users', $data);
+
+        if ($response) {
+            return $this->db->insert_id();
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function get_active_users()
+    {
+        $this->db->where('status', 'active');
+
+        $this->db->group_start();
+            $this->db->where('role', USER_ROLE_ADMIN);
+            $this->db->or_where('role', USER_ROLE_MANAGER);
+        $this->db->group_end();
+
+        $query = $this->db->get('users');
+        $result = $query->result();
+
+        return $result;
+    }
+
+    public function get_user_info($id)
+    {
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('users');
+        $row = $query->row();
+
+        return $row;
+    }
+
+
+    public function update_user(){
+
+        $user_id = (int) $this->input->post('user_id');
+
+        $fname = (string) $this->input->post('fname');
+        $mname = (string) $this->input->post('mname');
+        $lname = (string) $this->input->post('lname');
+        $xname = (string) $this->input->post('xname');
+        $username = (string) $this->input->post('username');
+        $role = (string) $this->input->post('role');
+
+        $data = array(
+            'fname' => $fname,
+            'mname' => $mname,
+            'lname' => $lname,
+            'xname' => $xname,
+            'username' => $username,
+            'role' => $role
+        );
+
+        $this->db->where('user_id', $user_id);
+        $response = $this->db->update('users', $data);
+
+        if ($response) {
+            return $user_id;
+        } else {
+            return FALSE;
+        }
+    }
+
+
+
 }

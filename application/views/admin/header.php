@@ -38,19 +38,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <div class="row">
             <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="sidebar-sticky pt-3">
-                    <div class="m-auto">
-                        <?php
-                        $img = base_url('assets/images/user.png');
-                        if (isset($profile->person_info->photo) && !empty($profile->person_info->photo)) {
-                            if (file_exists('./uploads/' . $profile->person_info->photo)) {
-                                $img = base_url('uploads/' . $profile->person_info->photo);
-                            }
-                        }
-                        ?>
-                        <img class="img-fluid img-round" src="<?php echo $img; ?>" alt="User">
-                        <p class="text-center"><a href="<?php echo site_url(); ?>guest/edit_profile_pic"><span data-feather="pencil"></span>Edit</a></p>
-                    </div>
-
+                    
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list">
@@ -76,9 +64,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 <span data-feather="file"></span>
                                 Add User
                             </a>
+                            <hr class="mx-1" />
                         </li>
 
-                        <hr class="mx-1" />
+
 
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo site_url(); ?>admin/guests_list">
@@ -105,9 +94,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 Dashboard <span class="sr-only">(current)</span>
                             </a>
                         </li> -->
-                        <hr class="mx-3" />
+
 
                         <li class="nav-item">
+                            <hr class="mx-3" />
                             <a class="nav-link" href="<?php echo site_url(); ?>guest/person_info">
                                 <span data-feather="file"></span>
                                 Personal Information

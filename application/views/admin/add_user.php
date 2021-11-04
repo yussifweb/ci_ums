@@ -1,7 +1,3 @@
-<h2></h2>
-<!-- <?php dd($profile); ?> -->
-
-<!-- <?php echo validation_errors(); ?> -->
 <div class="row pt-3">
     <div class="col-md-8 offset-md-2">
         <?php echo form_open_multipart('admin/add_user', array('onsubmit' => 'return confirm(\'Are You sure you want add user?\')')); ?>
@@ -38,7 +34,15 @@
             <input type="password" class="form-control" name="password2" value="<?php echo set_value('password2'); ?>" placeholder="Confirm Password">
             <small class="text-danger text-sm"><?php echo form_error('password2'); ?></small>
         </div>
-        
+        <div class="form-group">
+            <select name="role" id="role" class="form-control">
+                <option value="<?php echo USER_ROLE_ADMIN; ?>">Administrator</option>
+                <option value="<?php echo USER_ROLE_MANAGER; ?>">Manager</option>
+                <option value="<?php echo USER_ROLE_VISITOR; ?>">Visitor</option>
+            </select>
+            <small class="text-danger text-sm"><?php echo form_error('role'); ?></small>
+        </div>
+
         <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
 
         <input type="submit" name="submit" class="btn btn-primary" value="Save">
