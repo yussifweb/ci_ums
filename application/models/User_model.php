@@ -348,6 +348,104 @@ public function get_skill_info($id)
         }
     }
 
+    public function get_inactive_users()
+    {
+        $this->db->where('status', 'inactive');
 
+        $this->db->group_start();
+        $this->db->where('role', USER_ROLE_ADMIN);
+        $this->db->or_where('role', USER_ROLE_MANAGER);
+        $this->db->group_end();
+
+        $query = $this->db->get('users');
+        $result = $query->result();
+
+        return $result;
+    }
+
+    public function deactivate_user($id)
+    {
+
+        $data = array(
+            'status' => 'inactive'
+        );
+
+        $this->db->where('user_id', $id);
+        $response = $this->db->update('users', $data);
+
+        if ($response) {
+            return $id;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function activate_user($id)
+    {
+
+        $data = array(
+            'status' => 'active'
+        );
+
+        $this->db->where('user_id', $id);
+        $response = $this->db->update('users', $data);
+
+        if ($response) {
+            return $id;
+        } else {
+            return FALSE;
+        }
+    }
+
+
+    public function get_active_guests()
+    {
+        $this->db->where('status', 'active');
+        $this->db->where('role', USER_ROLE_VISITOR);
+
+        $query = $this->db->get('users');
+        $result = $query->result();
+
+        return $result;
+    }
+
+    public function get_inactive_guests()
+    {
+        $this->db->where('status', 'inactive');
+        $this->db->where('role', USER_ROLE_VISITOR);
+
+        $query = $this->db->get('users');
+        $result = $query->result();
+
+        return $result;
+    }
+
+
+    public function is_user_exist($id)
+    {
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('users');
+        $row = $query->row();
+
+        // return $row;
+
+        if ($row) {
+           return TRUE;
+        }
+        return FALSE;
+    }
+
+    public function is_user_active($id)
+    {
+        $this->db->where('user_id', $id);
+        $this->db->where('status', 'active');
+        $query = $this->db->get('users');
+        $row = $query->row();
+
+        if ($row) {
+            return TRUE;
+        }
+        return FALSE;
+    }
 
 }

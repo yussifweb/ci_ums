@@ -11,27 +11,31 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th>1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>
-                    <!-- <a class="btn btn-sm btn-info" href="#">Edit</a> -->
-                    <a class="btn btn-sm btn-success" href="#" onclick="return confirm('Are you sure you want to activate this user')">Activate</a>
-                </td>
-            </tr>
-            <tr>
-                <th>2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th>3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-            </tr>
+            <?php
+            if (isset($users) && !empty($users)) {
+                foreach ($users as $key => $row) {
+                    $id = $row->user_id;
+            ?>
+                    <tr>
+                        <th><?php echo fullname($row->fname, $row->mname, $row->lname, $row->xname); ?></th>
+                        <td><?php echo $row->username; ?></td>
+                        <td><?php echo ucfirst($row->role); ?></td>
+                        <td>
+                            <a class="btn btn-sm btn-success" href="<?php echo site_url('admin/activate_user/' . $id); ?>" onclick="return confirm('Are you sure you want to activate this user')">Activate</a>
+                        </td>
+                    </tr>
+
+                <?php
+                }
+            } else {
+                ?>
+                <tr>
+                    <td colspan="4" class="text-center">No record found</td>
+                </tr>
+            <?php
+            }
+            ?>
+
         </tbody>
     </table>
     <!-- <a href="<?php echo site_url('guest/edit_person_info'); ?>" class="btn btn-primary"><span data-feather="edit"></span>Edit</a> -->

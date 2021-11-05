@@ -53,12 +53,8 @@ class Admin extends CI_Controller
     public function users_list_deactivated(){
         $data['title'] = 'All Inactive Users';
 
-        // $this->load->model('user_model');
-        // $id = $_SESSION['user_id'];
-        // $data['profile'] = $this->user_model->get_profile_info($id);
-
-        // var_dump($data);
-        // dd($data);
+        $this->load->model('user_model');
+        $data['users'] = $this->user_model->get_inactive_users();
 
         $this->load->view('admin/header', $data);
         $this->load->view('admin/users_deactivated');
@@ -68,12 +64,8 @@ class Admin extends CI_Controller
     public function guests_list(){
         $data['title'] = 'All Guests';
 
-        // $this->load->model('user_model');
-        // $id = $_SESSION['user_id'];
-        // $data['profile'] = $this->user_model->get_profile_info($id);
-
-        // var_dump($data);
-        // dd($data);
+        $this->load->model('user_model');
+        $data['users'] = $this->user_model->get_active_guests();
 
         $this->load->view('admin/header', $data);
         $this->load->view('admin/guests');
@@ -84,12 +76,8 @@ class Admin extends CI_Controller
     public function guests_list_deactivated(){
         $data['title'] = 'All Inactive Guests';
 
-        // $this->load->model('user_model');
-        // $id = $_SESSION['user_id'];
-        // $data['profile'] = $this->user_model->get_profile_info($id);
-
-        // var_dump($data);
-        // dd($data);
+        $this->load->model('user_model');
+        $data['users'] = $this->user_model->get_inactive_guests();
 
         $this->load->view('admin/header', $data);
         $this->load->view('admin/guests_deactivated');
@@ -100,13 +88,6 @@ class Admin extends CI_Controller
         $data['title'] = 'Add New User';
 
         $this->submit_user();
-
-        // $this->load->model('user_model');
-        // $id = $_SESSION['user_id'];
-        // $data['profile'] = $this->user_model->get_profile_info($id);
-
-        // var_dump($data);
-        // dd($data);
 
         $this->load->view('admin/header', $data);
         $this->load->view('admin/add_user');
@@ -138,13 +119,19 @@ class Admin extends CI_Controller
         }
     }
 
-    public function edit_user($id){
+
+    public function edit_user($id = ''){
+
+        $this->load->model('user_model');
+        if (!$this->user_model->is_user_exist($id)) {
+            redirect('admin/users_list');
+        }
 
         $this->update_user_info();
         
         $data['title'] = 'Edit User Information';
 
-        $this->load->model('user_model');
+       
         $data['user'] = $this->user_model->get_user_info($id);
 
         $this->load->view('admin/header', $data);
@@ -173,6 +160,91 @@ class Admin extends CI_Controller
             }
         }
     }
+
+    public function deactivate_user($id){
+
+        $this->load->model('user_model');
+        if (!$this->user_model->is_user_exist($id)) {
+            redirect('admin/users_list');
+        }
+
+        if ($id != $_SESSION['user_id']) {
+            redirect('admin/users_list');
+        }
+
+        $response = $this->user_model->deactivate_user($id);
+
+        if ($response) {
+            $this->session->set_flashdata('success', 'User deactivation successful.');
+        } else {
+            $this->session->set_flashdata('error', 'The deactivation was not successful.');
+        }
+
+        redirect('admin/users_list');
+    }
+
+    public function activate_user($id){
+
+        $this->load->model('user_model');
+        if (!$this->user_model->is_user_exist($id)) {
+            redirect('admin/users_list_deactivated');
+        }
+
+        $response = $this->user_model->activate_user($id);
+
+        if ($response) {
+            $this->session->set_flashdata('success', 'User activation successful.');
+        } else {
+            $this->session->set_flashdata('error', 'The activation was not successful.');
+        }
+
+        redirect('admin/users_list_deactivated');
+    }
+
+
+    public function deactivate_guest($id){
+
+        $this->load->model('user_model');
+
+        if (!$this->user_model->is_user_exist($id)) {
+            redirect('admin/guests_list');
+        }
+
+        // if ($id != $_SESSION['user_id']) {
+        //     redirect('admin/guests_list');
+        // }
+
+        $response = $this->user_model->deactivate_user($id);
+
+        if ($response) {
+            $this->session->set_flashdata('success', 'Guest deactivation successful.');
+        } else {
+            $this->session->set_flashdata('error', 'The deactivation was not successful.');
+        }
+
+        redirect('admin/guests_list');
+    }
+
+
+    public function activate_guest($id){
+
+        $this->load->model('user_model');
+        if (!$this->user_model->is_user_exist($id)) {
+            redirect('admin/guests_list_deactivated');
+        }
+
+        $response = $this->user_model->activate_user($id);
+
+        if ($response) {
+            $this->session->set_flashdata('success', 'Guest activation successful.');
+        } else {
+            $this->session->set_flashdata('error', 'The activation was not successful.');
+        }
+
+        redirect('admin/guests_list_deactivated');
+    }
+
+
 
     
 }

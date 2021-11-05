@@ -61,13 +61,24 @@ class Account extends CI_Controller
                 $response = $this->account_model->login();
 
                 if ($response) {
-                    if (isset($_SESSION['role']) && ($_SESSION['role'] == USER_ROLE_ADMIN || $_SESSION['role'] == USER_ROLE_MANAGER)) {
+                    if ($_SESSION['status'] == 'inactive') {
+                        $this->session->set_flashdata('error', 'Sorry, Your account is deactivated.');
+                        redirect('/');
+                    }elseif (isset($_SESSION['role']) && ($_SESSION['role'] == USER_ROLE_ADMIN || $_SESSION['role'] == USER_ROLE_MANAGER)) {
                         $this->session->set_flashdata('success', 'Login successful.');
                         redirect('admin');
-                    }else {
+                    } else {
                         $this->session->set_flashdata('success', 'Login successful.');
                         redirect('guest');
                     }
+
+                    // if (isset($_SESSION['role']) && ($_SESSION['role'] == USER_ROLE_ADMIN || $_SESSION['role'] == USER_ROLE_MANAGER)) {
+                    //     $this->session->set_flashdata('success', 'Login successful.');
+                    //     redirect('admin');
+                    // } else {
+                    //     $this->session->set_flashdata('success', 'Login successful.');
+                    //     redirect('guest');
+                    // }
                     
                 } else {
                     $this->session->set_flashdata('error', 'Sorry, Unknown Account');

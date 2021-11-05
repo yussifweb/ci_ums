@@ -17,7 +17,7 @@ class Account_model extends CI_Model
 
         $this->db->where('username', $username);
         $this->db->where('password', $password);
-        $this->db->where('status', 'active');
+        // $this->db->where('status', 'active');
         $query = $this->db->get('users');
         $row = $query->row();
 

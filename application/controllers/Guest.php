@@ -20,6 +20,12 @@ class Guest extends CI_Controller
 
         $this->load->model('user_model');
         $id = $_SESSION['user_id'];
+        if (!$this->user_model->is_user_active($id)) {
+            $this->session->set_flashdata('error', 'Sorry, Your account is deactivated.');
+
+            redirect('account/logout');
+        }
+    
         $data['profile'] = $this->user_model->get_profile_info($id);
     }
 
