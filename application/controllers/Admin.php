@@ -40,6 +40,8 @@ class Admin extends CI_Controller
         $data['title'] = 'All Users';
 
         $this->load->model('user_model');
+        $session_id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($session_id);
         $data['users'] = $this->user_model->get_active_users();
 
         // var_dump($data);
@@ -54,6 +56,8 @@ class Admin extends CI_Controller
         $data['title'] = 'All Inactive Users';
 
         $this->load->model('user_model');
+        $session_id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($session_id);
         $data['users'] = $this->user_model->get_inactive_users();
 
         $this->load->view('admin/header', $data);
@@ -65,6 +69,8 @@ class Admin extends CI_Controller
         $data['title'] = 'All Guests';
 
         $this->load->model('user_model');
+        $session_id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($session_id);
         $data['users'] = $this->user_model->get_active_guests();
 
         $this->load->view('admin/header', $data);
@@ -77,6 +83,8 @@ class Admin extends CI_Controller
         $data['title'] = 'All Inactive Guests';
 
         $this->load->model('user_model');
+        $session_id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($session_id);
         $data['users'] = $this->user_model->get_inactive_guests();
 
         $this->load->view('admin/header', $data);
@@ -86,6 +94,11 @@ class Admin extends CI_Controller
 
     public function add_user(){
         $data['title'] = 'Add New User';
+
+        $this->load->model('user_model');
+        $session_id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($session_id);
+
 
         $this->submit_user();
 
@@ -131,7 +144,8 @@ class Admin extends CI_Controller
         
         $data['title'] = 'Edit User Information';
 
-       
+        $session_id = $_SESSION['user_id'];
+        $data['profile'] = $this->user_model->get_profile_info($session_id);
         $data['user'] = $this->user_model->get_user_info($id);
 
         $this->load->view('admin/header', $data);

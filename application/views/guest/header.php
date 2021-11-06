@@ -15,6 +15,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <title><?php echo $profile->fname; ?> - Profile Management System</title>
 
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo base_url('assets/css/dashboard.css'); ?>" rel="stylesheet">
@@ -48,7 +49,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         }
                         ?>
                         <img class="img-fluid img-round" src="<?php echo $img; ?>" alt="User">
-                        <p class="text-center"><a href="<?php echo site_url(); ?>guest/edit_profile_pic"><span data-feather="pencil"></span>Edit</a></p>
+                        <p class="text-center"><a href="<?php echo site_url(); ?>guest/edit_profile_pic"><span data-feather="edit"></span>Edit</a></p>
                     </div>
 
                     <ul class="nav flex-column">

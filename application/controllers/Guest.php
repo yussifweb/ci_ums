@@ -104,6 +104,9 @@ class Guest extends CI_Controller
 
         $this->load->model('user_model');
         $id = $_SESSION['user_id'];
+        
+        $data['profile'] = $this->user_model->get_profile_info($id);
+
         $data['skills'] = $this->user_model->get_skill_info($id);
 
         $this->load->view('guest/header', $data);
