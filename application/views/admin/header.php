@@ -26,10 +26,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-        <ul class="navbar-nav px-3">
+        <form action="" class="w-80">
+            <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+        </form>
+
+        <ul class="navbar nav px-3">
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="<?php echo site_url(); ?>account/logout">Logout</a>
+                <a class="nav-link" href="#"><?php echo $profile->fname; ?> <span class="badge badge-light"><?php echo ucfirst($profile->role); ?></span></a>
+            </li>
+            <li class="nav-item text-nowrap">
+                <a type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="Logout" class="nav-link" href="<?php echo site_url(); ?>account/logout">
+                    <span data-feather="power"></span></a>
             </li>
         </ul>
     </nav>
@@ -51,36 +58,40 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         <p class="text-center"><a href="<?php echo site_url(); ?>guest/edit_profile_pic"><span data-feather="edit"></span>Edit</a></p>
                     </div>
 
-
                     <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list">
-                                <span data-feather="file"></span>
-                                All Users
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list">
-                                <span data-feather="file"></span>
-                                Active Users
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list_deactivated">
-                                <span data-feather="file"></span>
-                                Inactive Users
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo site_url(); ?>admin/add_user">
-                                <span data-feather="file"></span>
-                                Add User
-                            </a>
-                            <hr class="mx-1" />
-                        </li>
+                        <?php
+                        if ($profile->role == USER_ROLE_ADMIN) { ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list">
+                                    <span data-feather="file"></span>
+                                    All Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list">
+                                    <span data-feather="file"></span>
+                                    Active Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo site_url(); ?>admin/users_list_deactivated">
+                                    <span data-feather="file"></span>
+                                    Inactive Users
+                                </a>
+                            </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo site_url(); ?>admin/add_user">
+                                    <span data-feather="file"></span>
+                                    Add User
+                                </a>
+                                <hr class="mx-1" />
+                            </li>
 
+                        <?php
+                        }
+                        ?>
 
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo site_url(); ?>admin/guests_list">

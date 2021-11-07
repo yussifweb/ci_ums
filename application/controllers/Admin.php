@@ -39,6 +39,10 @@ class Admin extends CI_Controller
     public function users_list(){
         $data['title'] = 'All Users';
 
+        if ($this->data['profile']->role != USER_ROLE_ADMIN) {
+            redirect('admin/guests_list');
+        }
+
         $this->load->model('user_model');
         $session_id = $_SESSION['user_id'];
         $data['profile'] = $this->user_model->get_profile_info($session_id);
@@ -54,6 +58,10 @@ class Admin extends CI_Controller
 
     public function users_list_deactivated(){
         $data['title'] = 'All Inactive Users';
+
+        if ($this->data['profile']->role != USER_ROLE_ADMIN) {
+            redirect('admin/guests_list');
+        }
 
         $this->load->model('user_model');
         $session_id = $_SESSION['user_id'];
@@ -95,6 +103,10 @@ class Admin extends CI_Controller
     public function add_user(){
         $data['title'] = 'Add New User';
 
+        if ($this->data['profile']->role != USER_ROLE_ADMIN) {
+            redirect('admin/guests_list');
+        }
+
         $this->load->model('user_model');
         $session_id = $_SESSION['user_id'];
         $data['profile'] = $this->user_model->get_profile_info($session_id);
@@ -135,6 +147,9 @@ class Admin extends CI_Controller
 
     public function edit_user($id = ''){
 
+        if ($this->data['profile']->role != USER_ROLE_ADMIN) {
+            redirect('admin/guests_list');
+        }
         $this->load->model('user_model');
         if (!$this->user_model->is_user_exist($id)) {
             redirect('admin/users_list');
@@ -177,6 +192,10 @@ class Admin extends CI_Controller
 
     public function deactivate_user($id){
 
+        if ($this->data['profile']->role != USER_ROLE_ADMIN) {
+            redirect('admin/guests_list');
+        }
+
         $this->load->model('user_model');
         if (!$this->user_model->is_user_exist($id)) {
             redirect('admin/users_list');
@@ -198,6 +217,9 @@ class Admin extends CI_Controller
     }
 
     public function activate_user($id){
+        if ($this->data['profile']->role != USER_ROLE_ADMIN) {
+            redirect('admin/guests_list');
+        }
 
         $this->load->model('user_model');
         if (!$this->user_model->is_user_exist($id)) {
